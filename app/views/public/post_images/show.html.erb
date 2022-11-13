@@ -10,6 +10,9 @@
       <% if @post_image.user == current_user %>
         <p><%= link_to 'Destroy', @post_image, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_post_image_#{@post_image.id}" %></p>
       <% end %>
+      <div class=<%= "favorite-" + @post_image.id.to_s %> >
+        <%= render "public/favorites/btn", post_image: @post_image %>
+      </div>
       <div class="post_image-comments-counter">
         <%= render "public/post_comments/counter", post_image: @post_image %>
       </div>
