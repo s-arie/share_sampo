@@ -1,0 +1,17 @@
+<%= form_with model:post_image,local:true do |f| %>
+  <div class="form-group">
+    <%= f.label :タイトル %>
+    <%= f.text_field :title, class: 'form-control title' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :画像 %>
+    <%= f.file_field :image, class: "form-control-file image", accept: 'image/*' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :キャプション %>
+    <%= f.text_area :caption, class: 'form-control caption' %>
+  </div>
+  <div class="form-group">
+    <%= f.submit class: 'btn btn-success' %>
+  </div>
+<% end %>
