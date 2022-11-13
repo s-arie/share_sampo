@@ -14,7 +14,9 @@ Rails.application.routes.draw do
   }
 
   scope module: :public do
-    resources :post_images
+    resources :post_images do
+      resources :post_comments, only: [:create, :destroy]
+    end
     resources :users, only: [:index, :show, :edit, :update]
   end
 

@@ -10,6 +10,20 @@
       <% if @post_image.user == current_user %>
         <p><%= link_to 'Destroy', @post_image, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_post_image_#{@post_image.id}" %></p>
       <% end %>
+      <div class="post_image-comments-counter">
+        <%= render "public/post_comments/counter", post_image: @post_image %>
+      </div>
+      <div class="post-comments-index">
+        <%= render "public/post_comments/index", post_image: @post_image %>
+      </div>
+      <%= render "public/post_comments/form", post_image: @post_image, post_comment: @post_comment %>
     </div>
   </div>
+</div>
+
+
+<div class="ml-1">
+  <%= link_to destroy_user_session_path, method: :delete,class: 'btn btn btn-light btn-block text-dark' do %>
+    <i class="fas fa-sign-out-alt"></i>&nbsp;ログアウト
+  <% end %>
 </div>
