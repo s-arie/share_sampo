@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
 
+  # ゲストログイン用
+  devise_scope :user do
+    post 'users/guest_sign_in', to: 'public/sessions#guest_sign_in'
+  end
+
   # 顧客用
   # URL /users/sign_in ...
   devise_for :users,skip: [:passwords], controllers: {
@@ -14,6 +19,8 @@ Rails.application.routes.draw do
   }
 
   scope module: :public do
+    root to: "homes#top"
+    get '/about' => "homes#about", as: "about"
     resources :post_images do
       resources :post_comments, only: [:create, :destroy]
       resource :favorites, only: [:create, :destroy]
