@@ -9,8 +9,16 @@ class Public::PostImagesController < ApplicationController
   def create
     @post_image = PostImage.new(post_image_params)
     @post_image.user_id = current_user.id
-    @post_image.save
-    redirect_to post_images_path
+    if params[:post_image][:tag_name].present?
+      tag_list = params[:post_image][:tag_name].split(nil)
+    end
+    if @post_image.save
+      @post_image.save_tag(tag_list)
+      redirect_to post_images_path
+    else
+      flash.now[:danger] = '投稿に失敗しました'
+      render :new
+    end
   end
 
   def index
