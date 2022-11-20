@@ -4,6 +4,11 @@ class PostImage < ApplicationRecord
   has_many :post_comments, dependent: :destroy
   has_many :favorites, dependent: :destroy
 
+  has_many :tag_relationships, dependent: :destroy
+  has_many :tags, through: :tag_relationships
+  accepts_nested_attributes_for :tags
+
+
   def get_image(width, height)
     unless image.attached?
       file_path = Rails.root.join('app/assets/images/default-image.jpg')
@@ -25,6 +30,25 @@ class PostImage < ApplicationRecord
       PostImage.where('title LIKE ?', '%'+content)
     else
       PostImage.where('title LIKE ?', '%'+content+'%')
+    end
+  end
+
+  def save_tag(tag_list)
+    # 既にタグあるなら全取得
+    current_tags = self.tags.pluck(:tag_name) unless self.tags.nil?
+    # 共通要素取り出し
+    old_tags = current_tags - tag_list
+    new_tags = tag_list - current_tags
+
+    # 古いタグ削除
+    old_tags.each do |old|
+      self.tags.delete Tag.find_by(tag_name: old)
+    end
+
+    # 新しいタグ作成
+    new_tags.each do |new|
+      new_tag = Tag.find_or_create_by(tag_name: new)
+      self.tags << new_tag
     end
   end
 

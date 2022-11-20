@@ -5,6 +5,7 @@
   <% end %>
   <p>タイトル：<%= post_image.title %></p>
   <p>キャプション：<%= post_image.caption %></p>
+  <p>タグ：<%= tag.tag_neme %></p>
   <p>投稿者：<%= post_image.user.name %></p>
   <p>投稿ユーザー画像：<%= image_tag post_image.user.get_profile_image(100,100) %></p>
   <p><%= link_to "#{post_image.post_comments.count} コメント", post_image_path(post_image.id) %></p>
