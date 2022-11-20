@@ -8,7 +8,7 @@ class Public::UsersController < ApplicationController
   end
 
   def index
-    @users = User.all
+    @users = PostImage.page(params[:page])
   end
 
   def edit

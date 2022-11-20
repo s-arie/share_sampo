@@ -31,6 +31,8 @@ class User < ApplicationRecord
     profile_image.variant(resize_to_limit: [width, height]).processed
   end
 
+
+
   def follow(user)
     relationships.create(followed_id: user.id)
   end
