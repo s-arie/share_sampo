@@ -8,6 +8,11 @@ class PostImage < ApplicationRecord
   has_many :tags, through: :tag_relationships
   accepts_nested_attributes_for :tags
 
+  # モデルの中で、オブジェクトの住所がどこにあるかをgeocoderに伝える
+  geocoded_by :address
+  # addressカラムに入った情報を元に「latitude」「longitude」に緯度・経度の情報が入る
+  after_validation :geocode
+
 
   def get_image(width, height)
     unless image.attached?
@@ -34,22 +39,14 @@ class PostImage < ApplicationRecord
   end
 
   def save_tag(tag_list)
-    # 既にタグあるなら全取得
-    current_tags = self.tags.pluck(:tag_name) unless self.tags.nil?
-    # 共通要素取り出し
-    old_tags = current_tags - tag_list
-    new_tags = tag_list - current_tags
-
-    # 古いタグ削除
-    old_tags.each do |old|
-      self.tags.delete Tag.find_by(tag_name: old)
+    if self.tags != nil
+      post_image_tags_records = TagRelationship.where(post_image_id: self.id)
+      post_image_tags_records.destroy_all
     end
 
-    # 新しいタグ作成
-    new_tags.each do |new|
-      new_tag = Tag.find_or_create_by(tag_name: new)
-      self.tags << new_tag
+    tag_list.each do |tag|
+      inspected_tag = Tag.where(tag_name: tag).first_or_create
+      self.tags << inspected_tag
     end
   end
-
 end
