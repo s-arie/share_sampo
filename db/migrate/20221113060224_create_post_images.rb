@@ -6,8 +6,8 @@ class CreatePostImages < ActiveRecord::Migration[6.1]
       t.string :title, null: false
       t.text :caption, null: false
       t.string :address
-      t.string :latitude
-      t.string :longitude
+      t.float :latitude
+      t.float :longitude
       t.timestamps null: false
     end
   end
