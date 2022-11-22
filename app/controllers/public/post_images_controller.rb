@@ -1,5 +1,4 @@
 class Public::PostImagesController < ApplicationController
-  before_action :authenticate_user!
   before_action :ensure_correct_user, only: [:edit, :update, :destroy]
 
   def new
@@ -28,6 +27,7 @@ class Public::PostImagesController < ApplicationController
   def show
     @post_image = PostImage.find(params[:id])
     @post_comment = PostComment.new
+    @tag_relationships = @post_image.tags
   end
 
   def edit

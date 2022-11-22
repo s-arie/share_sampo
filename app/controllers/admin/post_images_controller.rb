@@ -1,4 +1,5 @@
 class Admin::PostImagesController < ApplicationController
+
   def index
     @post_images = PostImage.all
   end
@@ -6,6 +7,7 @@ class Admin::PostImagesController < ApplicationController
   def show
     @post_image = PostImage.find(params[:id])
     @post_comment = PostComment.new
+    @tag_relationships = @post_image.tags
   end
 
   def edit
@@ -13,7 +15,7 @@ class Admin::PostImagesController < ApplicationController
 
   def update
     if @post_image.update(post_image_params)
-      redirect_to post_image_path(@post_image)
+      redirect_to admin_post_image_path(@post_image)
     else
       render "edit"
     end
@@ -21,15 +23,16 @@ class Admin::PostImagesController < ApplicationController
 
   def destroy
     @post_image = PostImage.find(params[:id])
+
     @post_image.destroy
-    redirect_to post_images_path
+    redirect_to admin_post_images_path
   end
 
 
   private
 
   def post_image_params
-    params.require(:post_image).permit(:title, :image, :caption)
+    params.require(:post_image).permit(:title, :image, :caption, :address)
   end
 
 end
