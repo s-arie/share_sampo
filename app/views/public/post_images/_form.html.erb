@@ -1,0 +1,107 @@
+<%= form_with model:post_image,local:true do |f| %>
+  <div class="form-group">
+    <%= f.label :タイトル %>
+    <%= f.text_field :title, class: 'form-control title' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :画像 %>
+    <%= f.file_field :image, class: "form-control-file image", accept: 'image/*' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :キャプション %>
+    <%= f.text_area :caption, class: 'form-control caption' %>
+  </div>
+  <div class="form-group">
+      <%= f.label :タグを作る %>
+      <%= f.text_field :tag_name, placeholder:",で区切ってください", class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%# script内の「hidden_address.setAttribute("value", inputAddress)」を介して、【住所入力用のテキストボックス】の値を受け取る %>
+    <%= f.hidden_field :address, id: "hidden_address" %>
+    <p>スポット登録</p>
+    <input id="address" type="textbox" value="">
+    <input type="button" value="地図検索" onclick="codeAddress()">
+  </div>
+
+  <%# 地図検索ボタンを押すと、ここに【経度・緯度】が表示される %>
+  <div id="display"></div>
+  <!-- Googleマップ表示エリア(地図を表示) -->
+  <div id='map' style='height: 600px; width: 600px;' ></div>
+
+  <!-- Googleマップ表示用の Javascript -->
+  <script>
+    const display = document.getElementById('display')
+    let map
+    let marker
+
+    function initMap() {
+      // 地図の作成
+      mapPosition = {lat: 35.6458437 , lng: 139.7046171 };
+      map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 9,
+        center: mapPosition
+      });
+
+      // 緯度・経度が存在する場合はif文の中身を実行
+      // gonを使用してcontrollerから緯度・経度を取得
+      if (!!gon.lat_lng) {
+        const lat_lng = {lat: gon.lat_lng[0], lng: gon.lat_lng[1]};
+         // 指定された座標でマップを中央に表示
+        map.setCenter(lat_lng);
+        // 指定された座標でマーカーを立てる
+        marker = new google.maps.Marker({
+          map: map,
+          position: lat_lng
+        });
+      }
+    }
+
+    // 地図検索ボタンを押すと実行される関数
+    function codeAddress() {
+      // 【住所入力用のテキストボックス】の値を取得
+      const inputAddress = document.getElementById('address').value;
+
+      const geocoder = new google.maps.Geocoder()
+      geocoder.geocode({
+        'address': inputAddress
+      // resultsに「ジオコーディングの結果」、statusに『ステータスコード』を渡す
+      }, function (results, status) {
+        // statusが「OK」の場合は...
+        if (status == 'OK') {
+          // 指定された座標でマップを中央に表示
+          map.setCenter(results[0].geometry.location);
+          // 「既にmarkerに値がある」場合は...
+          if (typeof marker != 'undefined') {
+            // markerをnullにする（前のマーカーが削除される）
+            marker.setMap(null);
+          }
+          // 指定された座標でマーカーを立てる
+          marker = new google.maps.Marker({
+          map: map,
+          position: results[0].geometry.location
+        });
+        // 「hidden_address」に【住所入力用のテキストボックス】の値を送る
+        const hidden_address = document.getElementById('hidden_address');
+        hidden_address.setAttribute("value", inputAddress);
+
+        // 検索結果が存在する場合は「display」に緯度・経度を表示させる
+        display.textContent = "<%= '検索結果' %>" + results[0].geometry.location
+        } else {
+          alert("<%= '検索結果がありません' %>" + status);
+        }
+      });
+    }
+  </script>
+
+  <%# APIキーの読み込み %>
+  <%# callback=initMap … APIが読み込まれたらinitMap()という関数を実行 %>
+  <%# async … async属性は、外部のスクリプト・ファイルのスクリプトが使用可能になったら実行する属性 %>
+  <%# defer … defer属性は、ページ読み込み時に、外部のスクリプト・ファイルのスクリプトを実行する属性 %>
+  <%# 「async属性」と「defer属性」を両方指定した場合、 「async属性」に対応しているブラウザは「async属性」に従う。「async属性」に対応していないブラウザは「defer属性」に従う %>
+  <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAP_API_KEY'] %>&callback=initMap" async defer></script>
+
+  <div class="form-group">
+    <%= f.submit class: 'btn btn-success', data: { turbo: false } %>
+  </div>
+<% end %>

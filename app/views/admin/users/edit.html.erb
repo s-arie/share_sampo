@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h4 class="mt-2 p-2 text-center bg-secondary text-white col-md-5"><%= @user.name %>さんの会員情報編集</h4>
+      <%= form_with model: @user, url: admin_user_path(@user.id), method: :patch do |f| %>
+      <%= render "public/shared/error_messages", resource: @user %>
+      <table class="table table-sm table-borderless col-9">
+        <tr>
+          <th><%= f.label :user_id, 'ユーザーID' %></th>
+          <td><%= @user.id %></td>
+        </tr>
+        <tr>
+          <th><%= f.label :name, 'ユーザー名' %></th>
+          <td><%= f.text_field :name, class:"form-control" %></td>
+        </tr>
+        <tr>
+          <th><%= f.label :email, 'メールアドレス' %></th>
+          <td><%= f.text_field :email, class:"form-control" %></td>
+        </tr>
+        <tr>
+          <th><%= f.label :ステータス %></th>
+          <td><%= f.radio_button :user_status, :true %>
+              <%= f.label :user_status, "有効", {value: :true} %>
+              <%= f.radio_button :user_status, :false %>
+              <%= f.label :user_status, "退会", {value: :false} %>
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td><%= f.submit '変更を保存', class:"btn btn-success" %></td>
+        </tr>
+      </table>
+      <% end %>
+    </div>
+  </div>
+</div>
