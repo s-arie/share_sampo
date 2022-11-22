@@ -43,7 +43,6 @@ class PostImage < ApplicationRecord
       post_image_tags_records = TagRelationship.where(post_image_id: self.id)
       post_image_tags_records.destroy_all
     end
-
     tag_list.each do |tag|
       inspected_tag = Tag.where(tag_name: tag).first_or_create
       self.tags << inspected_tag
