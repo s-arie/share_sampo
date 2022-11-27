@@ -8,6 +8,7 @@ class Public::PostImagesController < ApplicationController
   def create
     @post_image = PostImage.new(post_image_params)
     @post_image.user_id = current_user.id
+    tag_list = []
     if params[:post_image][:tag_name].present?
       tag_list = params[:post_image][:tag_name].split(nil)
     end
@@ -21,7 +22,7 @@ class Public::PostImagesController < ApplicationController
   end
 
   def index
-    @post_images = PostImage.all
+    @post_images = params[:tag_id].present? ? Tag.find(params[:tag_id]).post_images : PostImage.all
   end
 
   def show
@@ -51,7 +52,7 @@ class Public::PostImagesController < ApplicationController
   private
 
   def post_image_params
-    params.require(:post_image).permit(:title, :image, :caption, :address)
+    params.require(:post_image).permit(:title, :image, :caption, :address, tags_attributes: [:id, :tag_name])
   end
 
   def ensure_correct_user

@@ -4,4 +4,7 @@
 <% elsif @model == 'post_image' %>
 	<h3>"<%= @content %>" の投稿記事検索結果</h3>
   <%= render 'public/post_images/index', post_images: @records %>
+<%# elsif @model == 'tag' %>
+  <%#= @content %>
+  <%#= render 'public/tags/index', tags: @records %>
 <% end %>

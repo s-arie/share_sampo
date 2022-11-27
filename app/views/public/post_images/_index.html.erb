@@ -1,7 +1,12 @@
 <% post_images.each do |post_image| %>
-<div>
+  <% if user_signed_in? %>
   <%= link_to post_image_path(post_image.id) do %>
-    <%= image_tag post_image.get_image(500,500) %>
+    <%= image_tag post_image.get_image(500,500), style: "width:18%" %>
   <% end %>
-</div>
+  <% elsif admin_signed_in? %>
+  <%= link_to admin_post_image_path(post_image.id) do %>
+    <%= image_tag post_image.get_image(500,500), style: "width:18%" %>
+  <% end %>
+  <%= image_tag post_image.get_image(500,500), style: "width:18%" %>
+  <% end %>
 <% end %>

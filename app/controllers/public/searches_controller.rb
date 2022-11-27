@@ -7,8 +7,10 @@ class Public::SearchesController < ApplicationController
 		@method = params[:method]
 		if @model == 'user'
 			@records = User.search_for(@content, @method)
-		else
+		elsif @model == 'post_image'
 			@records = PostImage.search_for(@content, @method)
+		elsif @model == 'tag'
+			@records = Tag.search_for(@content, @method)
 		end
 	end
 

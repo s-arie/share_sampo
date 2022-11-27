@@ -1,6 +1,7 @@
 <div class='container'>
   <div class='row'>
-    <div class="col-sm-12 col-md-8 col-lg-5 px-5 px-sm-0 mx-auto">
+    <div class="mx-auto">
+      <%= render "public/shared/error_messages", resource: @post_image %>
   		<h1>新規投稿</h1>
   		<%= render 'form', post_image: @post_image %>
   		<%= link_to 'Show', @post_image, class: "post_image_#{@post_image.id}" %> |

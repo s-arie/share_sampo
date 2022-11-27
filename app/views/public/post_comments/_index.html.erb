@@ -11,7 +11,9 @@
         <td><%= post_comment.comment %></td>
         <td>
           <% if post_comment.user == current_user %>
-            <%= link_to "Destroy", post_image_post_comment_path(post_image, post_comment), method: :delete, class: "btn btn-danger pull-right", remote: true %>
+            <%= link_to "削除する", post_image_post_comment_path(post_image, post_comment), method: :delete, class: "btn btn-danger pull-right", remote: true %>
+          <% elsif admin_signed_in? %>
+            <%= link_to "削除する", admin_post_image_post_comment_path(post_image, post_comment), method: :delete, class: "btn btn-danger pull-right", remote: true %>
           <% end %>
         </td>
       </tr>

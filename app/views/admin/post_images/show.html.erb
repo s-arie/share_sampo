@@ -7,7 +7,7 @@
       <p>投稿ユーザー画像：<%= image_tag @post_image.user.get_profile_image(100,100) %></p>
       <p>投稿者：<%= @post_image.user.name %></p>
       <p>投稿日：<%= @post_image.created_at.strftime('%Y/%m/%d') %></p>
-      <p><%= link_to '削除する', @post_image, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_post_image_#{@post_image.id}" %></p>
+      <p><%= link_to '削除する', admin_post_image_path(@post_image), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_post_image_#{@post_image.id}" %></p>
       <div class="post_image-comments-counter">
         <%= render "public/post_comments/counter", post_image: @post_image %>
       </div>

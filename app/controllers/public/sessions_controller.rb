@@ -26,6 +26,11 @@ class Public::SessionsController < Devise::SessionsController
   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
   # end
 
+
+  def after_sign_in_path_for(resource)
+    post_images_path
+  end
+
   # 退会している場合の処理
   def reject_inactive_user
     @user = User.find_by(email: params[:user][:email])

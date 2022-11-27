@@ -14,6 +14,10 @@ class PostImage < ApplicationRecord
   after_validation :geocode
 
 
+  validates :title,presence:true
+  # validates :image, attached_file_presence: true
+  validates :caption,presence:true,length:{maximum:200}
+
   def get_image(width, height)
     unless image.attached?
       file_path = Rails.root.join('app/assets/images/default-image.jpg')
@@ -39,13 +43,21 @@ class PostImage < ApplicationRecord
   end
 
   def save_tag(tag_list)
-    if self.tags != nil
-      post_image_tags_records = TagRelationship.where(post_image_id: self.id)
-      post_image_tags_records.destroy_all
+    # 既にタグあるなら全取得
+    current_tags = self.tags.present? ? self.tags.pluck(:tag_name) : []
+    # 共通要素取り出し
+    old_tags = current_tags - tag_list
+    new_tags = tag_list - current_tags
+
+    # 古いタグ削除
+    old_tags.each do |old|
+      self.tags.delete Tag.find_by(tag_name: old)
     end
-    tag_list.each do |tag|
-      inspected_tag = Tag.where(tag_name: tag).first_or_create
-      self.tags << inspected_tag
+
+    # 新しいタグ作成
+    new_tags.each do |new|
+      new_tag = Tag.find_or_create_by(tag_name: new)
+      self.tags << new_tag
     end
   end
 end
