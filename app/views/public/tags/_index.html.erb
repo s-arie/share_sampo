@@ -1,8 +1,22 @@
 <div class='container px-5 px-sm-0'>
   <div class='row'>
     <h2>投稿一覧</h2>
-      <% tag_relationships.each do |tag_name|%>
-        <p><%= tag_name.postimage %></p>
+      <% tags.each do |tag_name|%>
+        <h3><%= tag_name.tag_name %></h3>
+        <% tag_name.post_images.each do |post_image| %>
+          <% if user_signed_in? %>
+            <%= link_to post_image_path(post_image.id) do %>
+              <%= image_tag post_image.get_image(500,500), style: "width:18%" %>
+            <% end %>
+          <% elsif admin_signed_in? %>
+            <%= link_to admin_post_image_path(post_image.id) do %>
+              <%= image_tag post_image.get_image(500,500), style: "width:18%" %>
+            <% end %>
+          <% else %>
+            <%= image_tag post_image.get_image(500,500), style: "width:18%" %>
+          <% end %>
+          <%= post_image.tags.pluck(:tag_name).join(', ') %>
+        <% end %>
       <% end %>
     </div>
   </div>

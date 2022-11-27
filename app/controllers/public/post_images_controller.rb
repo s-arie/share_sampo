@@ -10,7 +10,7 @@ class Public::PostImagesController < ApplicationController
     @post_image.user_id = current_user.id
     tag_list = []
     if params[:post_image][:tag_name].present?
-      tag_list = params[:post_image][:tag_name].split(nil)
+      tag_list = params[:post_image][:tag_name].split(/\s*,\s*/)
     end
     if @post_image.save
       @post_image.save_tag(tag_list)
