@@ -2,7 +2,7 @@ class Tag < ApplicationRecord
   has_many :tag_relationships, dependent: :destroy
   has_many :post_images, through: :tag_relationships
 
-  validates :tag_name, length: { minimum: 2, maximum: 20 }
+  validates :tag_name
 
   def self.search_for(content, method)
     if method == 'perfect'
