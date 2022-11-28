@@ -102,6 +102,6 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAP_API_KEY'] %>&callback=initMap" async defer></script>
 
   <div class="form-group">
-    <%= f.submit class: 'btn btn-success', data: { turbo: false } %>
+    <%= f.submit "投稿する", class: 'btn btn-success mt-3', data: { turbo: false } %>
   </div>
 <% end %>

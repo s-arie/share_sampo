@@ -10,17 +10,6 @@ class Admin::PostImagesController < ApplicationController
     @tag_relationships = @post_image.tags
   end
 
-  def edit
-  end
-
-  def update
-    if @post_image.update(post_image_params)
-      redirect_to admin_post_image_path(@post_image)
-    else
-      render "edit"
-    end
-  end
-
   def destroy
     @post_image = PostImage.find(params[:id])
 
