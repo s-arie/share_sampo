@@ -22,6 +22,17 @@ class Public::UsersController < ApplicationController
     end
   end
 
+  def unsubscribe
+    @user = current_user
+  end
+
+  def withdraw
+    @user = current_user
+    @user.update(user_status: false)
+    reset_session
+    redirect_to root_path
+  end
+
   private
 
   def user_params
