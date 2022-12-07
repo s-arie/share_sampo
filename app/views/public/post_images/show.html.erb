@@ -18,38 +18,41 @@
       <p>スポット</p>
       <p><%= @post_image.address %></p>
 
-      <!-- Googleマップ表示エリア(地図を表示) -->
-      <div id='map' style='height: 600px; width: 600px;' ></div>
 
-      <!-- Googleマップ表示用の Javascript -->
-      <script>
-        function initMap(){
-        // 地図の位置情報(緯度・経度)を取得・作成
-        let mapPosition = {lat: <%= @post_image.latitude || 0 %> , lng: <%= @post_image.longitude || 0 %> };
-        let map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 15,
-          center: mapPosition
-        });
-        let transitLayer = new google.maps.TransitLayer();
-        transitLayer.setMap(map);
+      <%# if @post_image.address present? %>
+        <!-- Googleマップ表示エリア(地図を表示) -->
+        <div id='map' style='height: 600px; width: 600px;' ></div>
 
-        let contentString = '【住所】<%= @post_image.address %>';
-        let infowindow = new google.maps.InfoWindow({
-          content: contentString
-        });
+        <!-- Googleマップ表示用の Javascript -->
+        <script>
+          function initMap(){
+          // 地図の位置情報(緯度・経度)を取得・作成
+          let mapPosition = {lat: <%= @post_image.latitude || 0 %> , lng: <%= @post_image.longitude || 0 %> };
+          let map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+            center: mapPosition
+          });
+          let transitLayer = new google.maps.TransitLayer();
+          transitLayer.setMap(map);
 
-        let marker = new google.maps.Marker({
-          position: mapPosition,
-          map: map,
-          title: contentString
-        });
+          let contentString = '【住所】<%= @post_image.address %>';
+          let infowindow = new google.maps.InfoWindow({
+            content: contentString
+          });
 
-        marker.addListener('click', function(){
-          infowindow.open(map, marker);
-        });
-        }
-      </script>
-      <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAP_API_KEY'] %>&callback=initMap" async defer></script>
+          let marker = new google.maps.Marker({
+            position: mapPosition,
+            map: map,
+            title: contentString
+          });
+
+          marker.addListener('click', function(){
+            infowindow.open(map, marker);
+          });
+          }
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAP_API_KEY'] %>&callback=initMap" async defer></script>
+      <%# end %>
 
 
       <% if @post_image.user == current_user %>
