@@ -14,10 +14,14 @@ class Public::SessionsController < Devise::SessionsController
   #   super
   # end
 
-  # DELETE /resource/sign_out
-  # def destroy
-  #   super
-  # end
+  #DELETE /resource/sign_out
+   def destroy
+     if current_user.email == 'guest@example.com'
+       current_user.post_images.destroy_all
+       current_user.relationships.destroy_all
+     end
+     super
+   end
 
   # protected
 

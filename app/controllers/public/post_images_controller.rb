@@ -1,4 +1,5 @@
 class Public::PostImagesController < ApplicationController
+  #before_action :authenticate_user!, only: [:new, :create, :show, :edit, :update, :destroy]
   before_action :ensure_correct_user, only: [:edit, :update, :destroy]
 
   def new
