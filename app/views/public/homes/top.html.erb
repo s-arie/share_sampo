@@ -18,6 +18,21 @@
           <p>※ゲストユーザーの方の投稿はログアウトすると削除されてしまいます</p>
         </div>
       </div>
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          <% @post_images.each do |post_image| %>
+            <div class="swiper-slide">
+              <%= image_tag post_image.get_image(500,500) %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <script>
+        var mySwiper = new Swiper('.swiper', {
+          // Optional parameters
+          loop: true,
+        });
+      </script>
     </div>
   </div>
 </div>
