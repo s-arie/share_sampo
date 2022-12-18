@@ -34,22 +34,22 @@
             <% end %>
           </li>
 
-          <% elsif admin_signed_in? %>
-          <div class="ml-1">
-            <%= link_to admin_users_path, class: 'btn btn btn-light btn-block text-dark' do %>
+        <% elsif admin_signed_in? %>
+          <li>
+            <%= link_to admin_users_path, class: 'nav-link text-light' do %>
               <i class="fas fa-users"></i>ユーザー一覧
             <% end %>
-          </div>
-          <div class="ml-1">
-            <%= link_to admin_post_images_path, class: 'btn btn btn-light btn-block text-dark' do %>
+          </li>
+          <li>
+            <%= link_to admin_post_images_path, class: 'nav-link text-light' do %>
               <i class="fas fa-list-ul"></i>投稿一覧
             <% end %>
-          </div>
-          <div class="ml-1">
-            <%= link_to destroy_admin_session_path, method: :delete, class: 'btn btn btn-light btn-block text-dark' do %>
+          </li>
+          <li>
+            <%= link_to destroy_admin_session_path, method: :delete, class: 'nav-link text-light' do %>
               <i class="fas fa-sign-out-alt"></i>ログアウト
             <% end %>
-          </div>
+          </li>
 
         <% else %>
           <li>

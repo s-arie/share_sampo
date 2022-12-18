@@ -1,71 +1,14 @@
 <div class='container px-5 px-sm-0'>
   <div class='row'>
-    <div class='col-md-3'>
-      <h2>ユーザー情報</h2>
-      <%= render 'public/users/info', user: current_user %>
-    </div>
-    <div class='col-md-8 offset-md-1'>
-  		<%= image_tag @post_image.get_image(500,500) %>
-      <p>タイトル：<%= @post_image.title %></p>
-      <p>キャプション：<%= @post_image.caption %></p>
-
-      <% @tag_relationships.each do |post_image|%>
-        <p>タグ：<%= post_image.tag_name %></p>
-      <% end %>
-      <p>投稿ユーザー画像：<%= image_tag @post_image.user.get_profile_image(100,100) %></p>
-      <p>投稿者：<%= @post_image.user.name %></p>
-      <p>投稿日：<%= @post_image.created_at.strftime('%Y/%m/%d') %></p>
-      <p>スポット</p>
-      <p><%= @post_image.address %></p>
-
-
-      <%# if @post_image.address present? %>
-        <!-- Googleマップ表示エリア(地図を表示) -->
-        <div id='map' style='height: 600px; width: 600px;' ></div>
-
-        <!-- Googleマップ表示用の Javascript -->
-        <script>
-          function initMap(){
-          // 地図の位置情報(緯度・経度)を取得・作成
-          let mapPosition = {lat: <%= @post_image.latitude || 0 %> , lng: <%= @post_image.longitude || 0 %> };
-          let map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 15,
-            center: mapPosition
-          });
-          let transitLayer = new google.maps.TransitLayer();
-          transitLayer.setMap(map);
-
-          let contentString = '【住所】<%= @post_image.address %>';
-          let infowindow = new google.maps.InfoWindow({
-            content: contentString
-          });
-
-          let marker = new google.maps.Marker({
-            position: mapPosition,
-            map: map,
-            title: contentString
-          });
-
-          marker.addListener('click', function(){
-            infowindow.open(map, marker);
-          });
-          }
-        </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAP_API_KEY'] %>&callback=initMap" async defer></script>
-      <%# end %>
-
-
-      <% if @post_image.user == current_user %>
-        <p><%= link_to 'Destroy', @post_image, method: :delete, data: { confirm: '本当に消しますか？', turbo: false }, class: "btn btn-sm btn-danger mt-3 destroy_post_image_#{@post_image.id}" %></p>
-      <% end %>
-
+    <div class='col-md-8 offset-md-3'>
+      <%= render "public/post_images/show", post_image: @post_image %>
       <div class=<%= "favorite-" + @post_image.id.to_s %> >
         <%= render "public/favorites/btn", post_image: @post_image %>
       </div>
-      <div class="post_image-comments-counter">
+      <div class="post_image-comments-counter mt-3">
         <%= render "public/post_comments/counter", post_image: @post_image %>
       </div>
-      <div class="post-comments-index">
+      <div class="post-comments-index my-3">
         <%= render "public/post_comments/index", post_image: @post_image %>
       </div>
       <%= render "public/post_comments/form", post_image: @post_image, post_comment: @post_comment %>
