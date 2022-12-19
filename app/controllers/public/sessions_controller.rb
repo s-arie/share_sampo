@@ -19,6 +19,7 @@ class Public::SessionsController < Devise::SessionsController
      if current_user.email == 'guest@example.com'
        current_user.post_images.destroy_all
        current_user.relationships.destroy_all
+       current_user.favorites.destroy_all
      end
      super
    end

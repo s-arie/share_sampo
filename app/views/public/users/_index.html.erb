@@ -10,8 +10,9 @@
     <% users.each do |user| %>
       <tr>
         <td><%= image_tag user.get_profile_image(50,50) %></td>
-        <td><%= user.name %><br>
-            <%= link_to user.name + "さんの投稿を見る", user_path(user) %>
+        <td>
+          <%= user.name %><br>
+          <%= link_to user.name + "さんの投稿を見る", user_path(user) %>
         </td>
       </tr>
       <tr>
